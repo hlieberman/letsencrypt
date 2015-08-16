@@ -4,10 +4,17 @@
 #export DH_VERBOSE=1
 
 %:
-	PYBUILD_DIR=$(CURDIR)/acme dh $@ --with python2,sphinxdoc --buildsystem=pybuild
+	PYBUILD_DIR=$(CURDIR)/acme dh $@ --with python2,sphinxdoc --buildsystem=pybuild --without=dh_auto_test
 	PYBUILD_DIR=$(CURDIR) dh $@ --with python2,sphinxdoc --buildsystem=pybuild
-	PYBUILD_DIR=$(CURDIR)/letsencrypt-apache dh $@ --with python2,sphinxdoc --buildsystem=pybuild
-	PYBUILD_DIR=$(CURDIR)/letsencrypt-nginx dh $@ --with python2,sphinxdoc --buildsystem=pybuild
+	PYBUILD_DIR=$(CURDIR)/letsencrypt-apache dh $@ --with python2,sphinxdoc --buildsystem=pybuild --without=dh_auto_test
+	PYBUILD_DIR=$(CURDIR)/letsencrypt-nginx dh $@ --with python2,sphinxdoc --buildsystem=pybuild --without=dh_auto_test
 
 override_dh_install:
 	dh_install --list-missing
+
+override_dh_auto_test:
+	cd $(CURDIR)
+	python2.7 -m nose --with-doctest acme/
+	python2.7 -m nose --with-doctest ./
+	python2.7 -m nose --with-doctest letsencrypt-apache
+	python2.7 -m nose --with-doctest letsencrypt-nginx
