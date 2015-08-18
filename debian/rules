@@ -4,14 +4,25 @@
 #export DH_VERBOSE=1
 
 %:
-	SUB=acme PYBUILD_DIR=$(CURDIR)/${SUB} dh $@ --with python2,sphinxdoc --buildsystem=pybuild --without=dh_auto_test
-	PYBUILD_DIR=$(CURDIR) dh $@ --with python2,sphinxdoc --buildsystem=pybuild
-	SUB=letsencrypt-apache PYBUILD_DIR=$(CURDIR)/${SUB} dh $@ --with python2,sphinxdoc --buildsystem=pybuild --without=dh_auto_test
-	SUB=letsencrypt-nginx PYBUILD_DIR=$(CURDIR)/${SUB} dh $@ --with python2,sphinxdoc --buildsystem=pybuild --without=dh_auto_test
+	dh $@ --with python2,sphinxdoc
 
-override_dh_install:
-	dh_install --list-missing
+override_dh_clean:
+	dh_auto_clean
+	cd $(CURDIR)
+	rm -rf build/ acme/build/ letsencrypt/build/ letsencrypt-apache/build/ letsencrypt-nginx/build
+
+override_dh_auto_build:
+	set -ex; for dir in acme . letsencrypt letsencrypt-apache letsencrypt-nginx; do \
+		cd $(CURDIR)/$$dir; \
+		python2.7 setup.py build; \
+	done
 
 override_dh_auto_test:
-	cd $(CURDIR)
-	python2.7 -m nose --with-doctest ${SUB}
+	set -ex; for dir in acme . letsencrypt letsencrypt-apache letsencrypt-nginx; do \
+		python2.7 $$dir/setup.py test; \
+	done
+
+override_dh_install:
+	set -ex; for dir in acme . letsencrypt letsencrypt-apache letsencrypt-nginx; do \
+		python2.7 $$dir/setup.py install --root=$(CURDIR)/debian/$(DEB_SOURCE) --install-layout=deb; \
+	done
