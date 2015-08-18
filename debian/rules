@@ -9,20 +9,20 @@
 override_dh_clean:
 	dh_auto_clean
 	cd $(CURDIR)
-	rm -rf build/ acme/build/ letsencrypt/build/ letsencrypt-apache/build/ letsencrypt-nginx/build
+	rm -rf build/ acme/build/ letsencrypt-apache/build/ letsencrypt-nginx/build
 
 override_dh_auto_build:
-	set -ex; for dir in acme . letsencrypt letsencrypt-apache letsencrypt-nginx; do \
+	set -ex; for dir in acme . letsencrypt-apache letsencrypt-nginx; do \
 		cd $(CURDIR)/$$dir; \
 		python2.7 setup.py build; \
 	done
 
 override_dh_auto_test:
-	set -ex; for dir in acme . letsencrypt letsencrypt-apache letsencrypt-nginx; do \
+	set -ex; for dir in acme . letsencrypt-apache letsencrypt-nginx; do \
 		python2.7 $$dir/setup.py test; \
 	done
 
 override_dh_install:
-	set -ex; for dir in acme . letsencrypt letsencrypt-apache letsencrypt-nginx; do \
+	set -ex; for dir in acme . letsencrypt-apache letsencrypt-nginx; do \
 		python2.7 $$dir/setup.py install --root=$(CURDIR)/debian/$(DEB_SOURCE) --install-layout=deb; \
 	done
