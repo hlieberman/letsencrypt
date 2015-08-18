@@ -21,6 +21,7 @@ override_dh_auto_test:
 	cd $(CURDIR)
 	mv acme acme.real
 	ln -s acme.real/build/* acme
+	ln -s $(CURDIR)/acme.real/acme/testdata acme/testdata
 	mv letsencrypt-apache letsencrypt-apache.real
 	ln -s letsencrypt-apache.real/build/* letsencrypt-apache
 	mv letsencrypt-nginx letsencrypt-nginx.real
