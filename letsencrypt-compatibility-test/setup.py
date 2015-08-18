@@ -7,7 +7,7 @@ install_requires = [
     'letsencrypt-apache',
     'letsencrypt-nginx',
     'docker-py',
-    'mock<1.1.0',  # py26
+    'mock',
     'zope.interface',
 ]
 
