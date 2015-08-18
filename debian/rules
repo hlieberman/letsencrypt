@@ -23,9 +23,11 @@ override_dh_auto_test:
 	ln -s acme.real/build/*/acme acme
 	ln -s $(CURDIR)/acme.real/acme/testdata acme/
 	mv letsencrypt-apache letsencrypt-apache.real
-	ln -s letsencrypt-apache.real/build/*/letsencrypt-apache letsencrypt-apache
+	ln -s letsencrypt-apache.real/build/*/letsencrypt_apache letsencrypt_apache
 	mv letsencrypt-nginx letsencrypt-nginx.real
-	ln -s letsencrypt-nginx.real/build/*/letsencrypt-nginx letsencrypt-nginx
+	ln -s letsencrypt-nginx.real/build/*/letsencrypt_nginx letsencrypt_nginx
+	rm letsencrypt/tests/test_util.py
+	ln -s $(CURDIR)/acme.real/acme/test_util.py letsencrypt/tests/test_util.py
 	set -ex; for dir in acme.real . letsencrypt-apache.real letsencrypt-nginx.real; do \
 		cd $(CURDIR)/$$dir; \
 		nosetests; \
