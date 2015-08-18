@@ -6,7 +6,7 @@ install_requires = [
     'acme',
     'letsencrypt',
     'pyparsing>=1.5.5',  # Python3 support; perhaps unnecessary?
-    'mock<1.1.0',  # py26
+    'mock',
     'zope.interface',
 ]
 

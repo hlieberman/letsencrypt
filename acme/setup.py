@@ -9,7 +9,7 @@ install_requires = [
     # load_pem_private/public_key (>=0.6)
     # rsa_recover_prime_factors (>=0.8)
     'cryptography>=0.8',
-    'mock<1.1.0',  # py26
+    'mock',
     'pyrfc3339',
     'ndg-httpsclient',  # urllib3 InsecurePlatformWarning (#304)
     'pyasn1',  # urllib3 InsecurePlatformWarning (#304)

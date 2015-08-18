@@ -5,7 +5,7 @@ from setuptools import find_packages
 install_requires = [
     'acme',
     'letsencrypt',
-    'mock<1.1.0',  # py26
+    'mock',
     'python-augeas',
     'zope.component',
     'zope.interface',

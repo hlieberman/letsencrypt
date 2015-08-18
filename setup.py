@@ -34,7 +34,7 @@ install_requires = [
     'ConfigArgParse',
     'configobj',
     'cryptography>=0.7',  # load_pem_x509_certificate
-    'mock<1.1.0',  # py26
+    'mock',
     'parsedatetime',
     'psutil>=2.1.0',  # net_connections introduced in 2.1.0
     'PyOpenSSL',
