@@ -19,7 +19,6 @@ override_dh_auto_build:
 override_dh_auto_test:
 	cd $(CURDIR)
 	export PYTHONPATH=$(CURDIR)/venv/lib/python2.7/site-packages/
-	set -ex; for dir in acme . letsencrypt-apache letsencrypt-nginx; do \
-		cd $(CURDIR)/$$dir; \
-		nosetests; \
+	set -ex; for suite in acme . letsencrypt-apache letsencrypt-nginx; do \
+		python setup.py test -s $$suite; \
 	done
