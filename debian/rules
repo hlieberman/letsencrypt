@@ -9,31 +9,17 @@
 override_dh_clean:
 	dh_auto_clean
 	cd $(CURDIR)
-	rm -rf build/ acme/build/ letsencrypt-apache/build/ letsencrypt-nginx/build
+	rm -rf venv
 
 override_dh_auto_build:
-	set -ex; for dir in acme . letsencrypt-apache letsencrypt-nginx; do \
-		cd $(CURDIR)/$$dir; \
-		python2.7 setup.py build; \
-	done
+	cd $(CURDIR)
+	virtualenv --no-site-packages -p python2 venv
+	./venv/bin/pip install acme/ ./ letsencrypt-apache/ letsencrypt-nginx/
 
 override_dh_auto_test:
 	cd $(CURDIR)
-	mv acme acme.real
-	ln -s acme.real/build/*/acme acme
-	ln -s $(CURDIR)/acme.real/acme/testdata acme/
-	mv letsencrypt-apache letsencrypt-apache.real
-	ln -s letsencrypt-apache.real/build/*/letsencrypt_apache letsencrypt_apache
-	mv letsencrypt-nginx letsencrypt-nginx.real
-	ln -s letsencrypt-nginx.real/build/*/letsencrypt_nginx letsencrypt_nginx
-	rm letsencrypt/tests/test_util.py
-	ln -s $(CURDIR)/acme.real/acme/test_util.py letsencrypt/tests/test_util.py
-	set -ex; for dir in acme.real . letsencrypt-apache.real letsencrypt-nginx.real; do \
+	export PYTHONPATH=$(CURDIR)/venv/lib/python2.7/site-packages/
+	set -ex; for dir in acme . letsencrypt-apache letsencrypt-nginx; do \
 		cd $(CURDIR)/$$dir; \
 		nosetests; \
-	done
-
-override_dh_install:
-	set -ex; for dir in acme . letsencrypt-apache letsencrypt-nginx; do \
-		python2.7 $$dir/setup.py install --root=$(CURDIR)/debian/$(DEB_SOURCE) --install-layout=deb; \
 	done
