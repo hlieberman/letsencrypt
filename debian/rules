@@ -19,5 +19,6 @@ override_dh_auto_build:
 override_dh_auto_test:
 	cd $(CURDIR)
 	set -ex; for suite in acme . letsencrypt-apache letsencrypt-nginx; do \
-		./venv/bin/python setup.py test -s $$suite; \
+		cd $(CURDIR)/$$suite; \
+		nosetests; \
 	done
