@@ -13,7 +13,7 @@ override_dh_clean:
 
 override_dh_auto_build:
 	cd $(CURDIR)
-	virtualenv --no-site-packages -p python2 venv
+	virtualenv --system-site-packages -p python2 venv
 	./venv/bin/pip install acme/ ./ letsencrypt-apache/ letsencrypt-nginx/
 
 override_dh_auto_test:
